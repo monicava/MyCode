@@ -14,6 +14,7 @@ process.GlobalTag.globaltag = cms.string('START53_V10::All')
 
 #process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )
 
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
@@ -30,9 +31,9 @@ process.printEventContent = cms.EDAnalyzer("EventContentAnalyzer")
 ## Example classic sequence
 process.demo = cms.EDAnalyzer('TauTest',
     tauTag                   = cms.untracked.InputTag("hpsPFTauProducer"),
-    tauDecayModeTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByDecayModeFinding"),
+    #tauDecayModeTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByDecayModeFinding"),
     #tauDecayModeTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByDecayModeFindingOldDMs"),
-    #tauDecayModeTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByDecayModeFindingNewDMs"),
+    tauDecayModeTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByDecayModeFindingNewDMs"),
          
     tauIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByLooseCombinedIsolationDBSumPtCorr3Hits"),
     tauMuonRejectionTag      = cms.untracked.InputTag("hpsPFTauDiscriminationByLooseMuonRejection2"),
@@ -45,8 +46,11 @@ process.demo = cms.EDAnalyzer('TauTest',
 
 
 process.p = cms.Path(#process.printEventContent+
-                      process.recoTauClassicHPSSequence
+                      #old tauID
+                      #process.recoTauClassicHPSSequence
+                      #new tauID
+                      process.PFTau
                      # process.recoTauClassicHPSSequence
                      #+process.printEventContent
-                    +process.demo
+                     +process.demo
                     )
