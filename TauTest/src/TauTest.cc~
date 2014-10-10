@@ -82,7 +82,6 @@ class TauTest : public edm::EDAnalyzer {
   TH1F *h_Tau_pt;  
   TH1F *h_Tau_eta;
 
-  TH1F *h_Tau_decaymode;
 
 };
 
@@ -125,76 +124,46 @@ TauTest::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
 
-   event_count++;
-
    std::cout << "EVENT IN ANALYZER = " << event_count << std::endl;
    std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
 
    edm::Handle<reco::PFTauCollection> tauHandle;
    iEvent.getByLabel(tauLabel_,tauHandle);
 
-   //reco::PFTauCollection thetaus = *tauHandle;
+   reco::PFTauCollection thetaus = *tauHandle;
 
-   edm::Handle<reco::PFTauDiscriminator> tauDecayModeHandle;
-   iEvent.getByLabel(tauDecayModeLabel_,tauDecayModeHandle);
+   edm::Handle<reco::PFTauDiscriminator> tauIDDiscr;
 
-   reco::PFTauDiscriminator thetauDecayModes = *tauDecayModeHandle;
 
-   for(reco::PFTauCollection::const_iterator iTau = tauHandle->begin(); iTau!=tauHandle->end(); ++iTau){
-     reco::PFTauRef thetauRef(reco::PFTauRef(tauHandle,iTau - tauHandle->begin()));
-     //std::cout << "HELLO TAU decay mode finding " << iTau->tauID("decayModeFindingOldDMs") << std::endl;
-     
+   for(reco::PFTauCollection::const_iterator tau_iter = thetaus.begin(); tau_iter!=thetaus.end(); ++tau_iter){
+
+     //reco::PFTauRef thistau = *tau_iter;
+
+     std::cout << "HELLO TAU:pt,eta " << tau_iter->pt() << " " << tau_iter->eta() << std::endl;
+     //std::cout << "HELLO TAU decay mode finding " << tau_iter->tauID("decayModeFindingOldDMs") << std::endl;
+     std::cout << "HELLO TAU:decay mode " << tau_iter->decayMode() << std::endl;
+
      //Recommendation
      //Taus that pass decay mode finding and have pt > 20 GeV
-     bool resultDecayMode = ((*tauDecayModeHandle)[thetauRef] > 0.5 );
-     
-     if( resultDecayMode && iTau->pt() > 20) {
-       //FILL THE HISTROGRAMS
-       h_Tau_pt->Fill(iTau->pt());
-       h_Tau_eta->Fill(iTau->eta());
-       
-       h_Tau_decaymode->Fill(iTau->decayMode());
-       
-       //std::cout << "HELLO TAU:pt,eta " << iTau->pt() << " " << iTau->eta() << std::endl;
-       //if( iTau->decayMode() == 0 ) std::cout << "HELLO TAU: kOneProng0PiZero"  << std::endl;
-       //if( iTau->decayMode() == 1 ) std::cout << "HELLO TAU: kOneProng1PiZero"  << std::endl;
-       //if( iTau->decayMode() == 2 ) std::cout << "HELLO TAU: kOneProng2PiZero"  << std::endl;
-       //if( iTau->decayMode() == 3 ) std::cout << "HELLO TAU: kThreeProng0PiZero"  << std::endl;
-       
-       /*
-	enum hadronicDecayMode {
-	 kNull = -1,
-	 kOneProng0PiZero, // 0
-	 kOneProng1PiZero, // 1
-	 kOneProng2PiZero, // 2
-	 kOneProng3PiZero, // 3
-	 kOneProngNPiZero, // 4
-	 kTwoProng0PiZero, // 5
-	 kTwoProng1PiZero, // 6
-	 kTwoProng2PiZero, // 7
-	 kTwoProng3PiZero, // 8
-	 kTwoProngNPiZero, // 9
-	 kThreeProng0PiZero, // 10
-	 kThreeProng1PiZero, // 11
-	 kThreeProng2PiZero, // 12
-	 kThreeProng3PiZero, // 13
-	 kThreeProngNPiZero, // 14
-	 kRareDecayMode      // 15
-       };
-       */
+     if( tau_iter->decayMode() && tau_iter->pt() > 20) {
+     std::cout << "HELLO TAU:pt,eta " << tau_iter->pt() << " " << tau_iter->eta() << std::endl;
+     std::cout << "HELLO TAU:decay mode " << tau_iter->decayMode() << std::endl;
+
      }
-     
+
+     //FILL THE HISTROGRAMS
+     h_Tau_pt->Fill(tau_iter->pt());
+     h_Tau_eta->Fill(tau_iter->eta());
+
+
    }
 
-
-   
 }
 
 
 void
 TauTest::beginJob()
 {
-
   event_count=0;
 
   rootFile_ = new TFile( fileName_.c_str(), "RECREATE" );
@@ -203,8 +172,6 @@ TauTest::beginJob()
   //BOOK THE HISTOGRAMS
   h_Tau_pt        =  new TH1F("h_Tau_pt","p_{t}^{#tau}",25,0,200);
   h_Tau_eta      =  new TH1F("h_Tau_eta","#eta^{#tau}",20,-5,5);
-
-  h_Tau_decaymode      =  new TH1F("h_Tau_decaymode","#tau decay mode",16,-0.5,15.5);
 
 }
 
@@ -217,7 +184,7 @@ TauTest::endJob()
   //WRITE-OUT THE HISTOGRAMS 
   h_Tau_pt->Write();
   h_Tau_eta->Write();
-  h_Tau_decaymode->Write();
+
 
   rootFile_->Write();
   rootFile_->Close();
