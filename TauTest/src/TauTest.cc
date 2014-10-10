@@ -159,7 +159,9 @@ TauTest::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        //if( iTau->decayMode() == 0 ) std::cout << "HELLO TAU: kOneProng0PiZero"  << std::endl;
        //if( iTau->decayMode() == 1 ) std::cout << "HELLO TAU: kOneProng1PiZero"  << std::endl;
        //if( iTau->decayMode() == 2 ) std::cout << "HELLO TAU: kOneProng2PiZero"  << std::endl;
-       //if( iTau->decayMode() == 3 ) std::cout << "HELLO TAU: kThreeProng0PiZero"  << std::endl;
+       //if( iTau->decayMode() == 5 ) std::cout << "HELLO TAU: kTwoProng0PiZero"  << std::endl;
+       //if( iTau->decayMode() == 6 ) std::cout << "HELLO TAU: kTwoProng1PiZero"  << std::endl;
+       //if( iTau->decayMode() == 10) std::cout << "HELLO TAU: kThreeProng0PiZero"  << std::endl;
        
        /*
 	enum hadronicDecayMode {
