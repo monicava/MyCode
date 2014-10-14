@@ -150,8 +150,8 @@ TauTest::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
    event_count++;
 
-   std::cout << "EVENT IN ANALYZER = " << event_count << std::endl;
-   std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
+   //std::cout << "EVENT IN ANALYZER = " << event_count << std::endl;
+   //std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
 
    edm::Handle<reco::PFTauCollection> tauHandle;
    iEvent.getByLabel(tauLabel_,tauHandle);

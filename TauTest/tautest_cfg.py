@@ -31,22 +31,26 @@ process.printEventContent = cms.EDAnalyzer("EventContentAnalyzer")
 ## Example classic sequence
 process.demo = cms.EDAnalyzer('TauTest',
     tauTag                   = cms.untracked.InputTag("hpsPFTauProducer"),
-    ## DECAY MODE:OLD (default)
+
+    # DECAY MODE
+    #################################################                        
+    # DECAY MODE:OLD (default)
     #tauDecayModeTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByDecayModeFinding"),
     tauDecayModeTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByDecayModeFindingOldDMs"),
     ## DECAY MODE:NEW (2 prongs included)
     #tauDecayModeTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByDecayModeFindingNewDMs"),
 
-    #ISOLATION     
+    #ISOLATION
+    #################################################                        
     # Run 1: 3 Hit
-    tauLooseIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByLooseCombinedIsolationDBSumPtCorr3Hits"),
-    tauMediumIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByMediumCombinedIsolationDBSumPtCorr3Hits"),
-    tauTightIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByTightCombinedIsolationDBSumPtCorr3Hits"),
+    #tauLooseIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByLooseCombinedIsolationDBSumPtCorr3Hits"),
+    #tauMediumIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByMediumCombinedIsolationDBSumPtCorr3Hits"),
+    #tauTightIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByTightCombinedIsolationDBSumPtCorr3Hits"),
 
     #OLD DM: MVA without LT
-    #tauLooseIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByLooseIsolationMVA3oldDMwoLT"),
-    #tauMediumIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByMediumIsolationMVA3oldDMwoLT"),
-    #tauTightIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByTightIsolationMVA3oldDMwoLT"),
+    tauLooseIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByLooseIsolationMVA3oldDMwoLT"),
+    tauMediumIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByMediumIsolationMVA3oldDMwoLT"),
+    tauTightIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByTightIsolationMVA3oldDMwoLT"),
 
     #OLD DM: MVA without LT                              
     #tauLooseIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByLooseIsolationMVA3oldDMwLT"),
@@ -63,15 +67,20 @@ process.demo = cms.EDAnalyzer('TauTest',
     #tauMediumIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByMediumIsolationMVA3newDMwLT"),
     #tauTightIsolationTag          = cms.untracked.InputTag("hpsPFTauDiscriminationByTightIsolationMVA3newDMwLT"),
 
-
-    ##MUON REJECTION:  recommended Rejection 2
+    ##MUON REJECTION:  recommended Rejection2
+    #################################################
     tauLooseMuonRejectionTag      = cms.untracked.InputTag("hpsPFTauDiscriminationByLooseMuonRejection2"),
     tauMediumMuonRejectionTag      = cms.untracked.InputTag("hpsPFTauDiscriminationByMediumMuonRejection2"),
     tauTightMuonRejectionTag      = cms.untracked.InputTag("hpsPFTauDiscriminationByTightMuonRejection2"),
+
     ##ELECTRON REJECTION: recommended MV5
+    #################################################                          
     tauLooseElectronRejectionTag  = cms.untracked.InputTag("hpsPFTauDiscriminationByMVA5LooseElectronRejection"),
     tauMediumElectronRejectionTag  = cms.untracked.InputTag("hpsPFTauDiscriminationByMVA5MediumElectronRejection"),
     tauTightElectronRejectionTag  = cms.untracked.InputTag("hpsPFTauDiscriminationByMVA5TightElectronRejection"),
+
+    #OUTPUT ROOT FILE
+    #################################################                               
     fileName           = cms.untracked.string("Histos.root")
                               
 )
