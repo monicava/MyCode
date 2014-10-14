@@ -73,9 +73,18 @@ class TauTest : public edm::EDAnalyzer {
   edm::InputTag tauLabel_;
 
   edm::InputTag tauDecayModeLabel_;
-  edm::InputTag tauIsolationLabel_;
-  edm::InputTag tauMuonRejectionLabel_;
-  edm::InputTag tauElectronRejectionLabel_;
+
+  edm::InputTag tauLooseIsolationLabel_;
+  edm::InputTag tauMediumIsolationLabel_;
+  edm::InputTag tauTightIsolationLabel_;
+
+  edm::InputTag tauLooseMuonRejectionLabel_;
+  edm::InputTag tauMediumMuonRejectionLabel_;
+  edm::InputTag tauTightMuonRejectionLabel_;
+
+  edm::InputTag tauLooseElectronRejectionLabel_;
+  edm::InputTag tauMediumElectronRejectionLabel_;
+  edm::InputTag tauTightElectronRejectionLabel_;
 
   int event_count;
 
@@ -83,6 +92,11 @@ class TauTest : public edm::EDAnalyzer {
   TH1F *h_Tau_eta;
 
   TH1F *h_Tau_decaymode;
+
+  TH1F *h_Tau_isolation;
+  TH1F *h_Tau_muonrejection;
+  TH1F *h_Tau_electronrejection;
+
 
 };
 
@@ -98,9 +112,18 @@ TauTest::TauTest(const edm::ParameterSet& iConfig)
   tauLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauTag");
 
   tauDecayModeLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauDecayModeTag");
-  tauIsolationLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauIsolationTag");
-  tauMuonRejectionLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauMuonRejectionTag");
-  tauElectronRejectionLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauElectronRejectionTag");
+
+  tauLooseIsolationLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauLooseIsolationTag");
+  tauMediumIsolationLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauMediumIsolationTag");
+  tauTightIsolationLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauTightIsolationTag");
+
+  tauLooseMuonRejectionLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauLooseMuonRejectionTag");
+  tauMediumMuonRejectionLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauMediumMuonRejectionTag");
+  tauTightMuonRejectionLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauTightMuonRejectionTag");
+
+  tauLooseElectronRejectionLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauLooseElectronRejectionTag");
+  tauMediumElectronRejectionLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauMediumElectronRejectionTag");
+  tauTightElectronRejectionLabel_ = iConfig.getUntrackedParameter<edm::InputTag>("tauTightElectronRejectionTag");
 
 
 }
@@ -135,10 +158,50 @@ TauTest::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
    //reco::PFTauCollection thetaus = *tauHandle;
 
+   //DECAY MODE
    edm::Handle<reco::PFTauDiscriminator> tauDecayModeHandle;
    iEvent.getByLabel(tauDecayModeLabel_,tauDecayModeHandle);
-
    reco::PFTauDiscriminator thetauDecayModes = *tauDecayModeHandle;
+
+   //ISOLATION
+   edm::Handle<reco::PFTauDiscriminator> tauLooseIsolationHandle;
+   iEvent.getByLabel(tauLooseIsolationLabel_,tauLooseIsolationHandle);
+   reco::PFTauDiscriminator theLooseIsolations = *tauLooseIsolationHandle;
+
+   edm::Handle<reco::PFTauDiscriminator> tauMediumIsolationHandle;
+   iEvent.getByLabel(tauMediumIsolationLabel_,tauMediumIsolationHandle);
+   reco::PFTauDiscriminator theMediumIsolations = *tauMediumIsolationHandle;
+
+   edm::Handle<reco::PFTauDiscriminator> tauTightIsolationHandle;
+   iEvent.getByLabel(tauTightIsolationLabel_,tauTightIsolationHandle);
+   reco::PFTauDiscriminator theTightIsolations = *tauTightIsolationHandle;
+
+   //ELECTRON REJECTION
+   edm::Handle<reco::PFTauDiscriminator> tauLooseElectronRejectionHandle;
+   iEvent.getByLabel(tauLooseElectronRejectionLabel_,tauLooseElectronRejectionHandle);
+   reco::PFTauDiscriminator theLooseElectronRejections = *tauLooseElectronRejectionHandle;
+
+   edm::Handle<reco::PFTauDiscriminator> tauMediumElectronRejectionHandle;
+   iEvent.getByLabel(tauMediumElectronRejectionLabel_,tauMediumElectronRejectionHandle);
+   reco::PFTauDiscriminator theMediumElectronRejections = *tauMediumElectronRejectionHandle;
+
+   edm::Handle<reco::PFTauDiscriminator> tauTightElectronRejectionHandle;
+   iEvent.getByLabel(tauTightElectronRejectionLabel_,tauTightElectronRejectionHandle);
+   reco::PFTauDiscriminator theTightElectronRejections = *tauTightElectronRejectionHandle;
+
+   //MUON REJECTION
+   edm::Handle<reco::PFTauDiscriminator> tauLooseMuonRejectionHandle;
+   iEvent.getByLabel(tauLooseMuonRejectionLabel_,tauLooseMuonRejectionHandle);
+   reco::PFTauDiscriminator theLooseMuonRejections = *tauLooseMuonRejectionHandle;
+
+   edm::Handle<reco::PFTauDiscriminator> tauMediumMuonRejectionHandle;
+   iEvent.getByLabel(tauMediumMuonRejectionLabel_,tauMediumMuonRejectionHandle);
+   reco::PFTauDiscriminator theMediumMuonRejections = *tauMediumMuonRejectionHandle;
+
+   edm::Handle<reco::PFTauDiscriminator> tauTightMuonRejectionHandle;
+   iEvent.getByLabel(tauTightMuonRejectionLabel_,tauTightMuonRejectionHandle);
+   reco::PFTauDiscriminator theTightMuonRejections = *tauTightMuonRejectionHandle;
+
 
    for(reco::PFTauCollection::const_iterator iTau = tauHandle->begin(); iTau!=tauHandle->end(); ++iTau){
      reco::PFTauRef thetauRef(reco::PFTauRef(tauHandle,iTau - tauHandle->begin()));
@@ -147,12 +210,43 @@ TauTest::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      //Recommendation
      //Taus that pass decay mode finding and have pt > 20 GeV
      bool resultDecayMode = ((*tauDecayModeHandle)[thetauRef] > 0.5 );
+
+     //isolation
+     bool resultLooseIsolation = ((*tauLooseIsolationHandle)[thetauRef] > 0.5 );
+     bool resultMediumIsolation = ((*tauMediumIsolationHandle)[thetauRef] > 0.5 );
+     bool resultTightIsolation = ((*tauTightIsolationHandle)[thetauRef] > 0.5 );
+
+     //electron rejection
+     bool resultLooseElectronRejection = ((*tauLooseElectronRejectionHandle)[thetauRef] > 0.5 );
+     bool resultMediumElectronRejection = ((*tauMediumElectronRejectionHandle)[thetauRef] > 0.5 );
+     bool resultTightElectronRejection = ((*tauTightElectronRejectionHandle)[thetauRef] > 0.5 );
+
+     //muon rejection
+     bool resultLooseMuonRejection = ((*tauLooseMuonRejectionHandle)[thetauRef] > 0.5 );
+     bool resultMediumMuonRejection = ((*tauMediumMuonRejectionHandle)[thetauRef] > 0.5 );
+     bool resultTightMuonRejection = ((*tauTightMuonRejectionHandle)[thetauRef] > 0.5 );
      
      if( resultDecayMode && iTau->pt() > 20) {
        //FILL THE HISTROGRAMS
        h_Tau_pt->Fill(iTau->pt());
        h_Tau_eta->Fill(iTau->eta());
        
+       //ISOLATION
+       if(resultLooseIsolation) h_Tau_isolation->Fill(1);
+       if(resultMediumIsolation) h_Tau_isolation->Fill(2);
+       if(resultTightIsolation) h_Tau_isolation->Fill(3);
+
+       //ELECTRON REJECTION
+       if(resultLooseElectronRejection) h_Tau_electronrejection->Fill(1);
+       if(resultMediumElectronRejection) h_Tau_electronrejection->Fill(2);
+       if(resultTightElectronRejection) h_Tau_electronrejection->Fill(3);
+
+       //MUON REJECTION
+       if(resultLooseMuonRejection) h_Tau_muonrejection->Fill(1);
+       if(resultMediumMuonRejection) h_Tau_muonrejection->Fill(2);
+       if(resultTightMuonRejection) h_Tau_muonrejection->Fill(3);
+
+       //DECAY MODE
        h_Tau_decaymode->Fill(iTau->decayMode());
        
        //std::cout << "HELLO TAU:pt,eta " << iTau->pt() << " " << iTau->eta() << std::endl;
@@ -208,6 +302,10 @@ TauTest::beginJob()
 
   h_Tau_decaymode      =  new TH1F("h_Tau_decaymode","#tau decay mode",16,-0.5,15.5);
 
+  h_Tau_isolation =  new TH1F("h_Tau_isolation","#tau isolation: loose, medium, tight",3,0.5,3.5);
+  h_Tau_electronrejection =  new TH1F("h_Tau_electronrejection","#tau electron rejection: loose, medium, tight",3,0.5,3.5);
+  h_Tau_muonrejection =  new TH1F("h_Tau_muonrejection","#tau muon rejection: loose, medium, tight",3,0.5,3.5);
+
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
@@ -216,10 +314,14 @@ TauTest::endJob()
 {
   rootFile_->cd();
 
+
   //WRITE-OUT THE HISTOGRAMS 
   h_Tau_pt->Write();
   h_Tau_eta->Write();
   h_Tau_decaymode->Write();
+  h_Tau_isolation->Write();
+  h_Tau_electronrejection->Write();
+  h_Tau_muonrejection->Write();
 
   rootFile_->Write();
   rootFile_->Close();
